@@ -24,30 +24,71 @@ namespace LinqProject
                 new Product{ ProductId=5, CategoryId=2, ProductName="Apple Telefon", QuantityPerUnit="4 GB RAM", UnitPrice=8000, UnitsInStock=0},
             };
 
-            Console.WriteLine("----Algoritmik-----");
+            //  NewMethod(products);
 
-            foreach(var product in products)
-            {
-                if (product.UnitPrice > 5000 && product.UnitsInStock>3)
-                {
-                    Console.WriteLine(product.ProductName);
+            // GetProducts(products);
 
-                }
-              
-            }
+            // AnyTest(products);
+            // FindTest(products);
 
-            Console.WriteLine("----Linq------");
+            // FindAllTest(products);
 
-            var result = products.Where(p =>p.UnitPrice > 5000 );
-
-
+           var result= 
+                from p in products where
+                p.UnitPrice>6000 orderby p.UnitPrice descending, p.ProductName ascending
+                select new ProductDto { ProductId = p.ProductId, ProductName = p.ProductName, UnitPrice = p.UnitPrice };
             foreach(var product in result)
             {
                 Console.WriteLine(product.ProductName);
             }
 
 
-            GetProducts(products);
+
+
+
+
+        }
+
+        private static void FindAllTest(List<Product> products)
+        {
+            var result = products.FindAll(p => p.ProductName.Contains("top"));
+            Console.WriteLine(products);
+        }
+
+        private static void FindTest(List<Product> products)
+        {
+            var result = products.Find(p => p.ProductId == 3);
+            Console.WriteLine(result.ProductName);
+        }
+
+        private static void AnyTest(List<Product> products)
+        {
+            var result = products.Any(p => p.ProductName == "Acer Laptop");
+        }
+
+        private static void NewMethod(List<Product> products)
+        {
+            Console.WriteLine("----Algoritmik-----");
+
+            foreach (var product in products)
+            {
+                if (product.UnitPrice > 5000 && product.UnitsInStock > 3)
+                {
+                    Console.WriteLine(product.ProductName);
+
+                }
+
+            }
+
+            Console.WriteLine("----Linq------");
+
+            var result = products.Where(p => p.UnitPrice > 5000);
+
+
+            foreach (var product in result)
+            {
+                Console.WriteLine(product.ProductName);
+            }
         }
 
         static List<Product> GetProducts(List<Product> products)
@@ -73,6 +114,12 @@ namespace LinqProject
             return result = products.Where(p => p.UnitPrice > 5000).ToList();//array gibi olduğu için tolist ekleriz,
         }
 
+    }
+    class productDto
+    {
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
+        public decimal UnitPrice { get; set; }
     }
     class Product
     {
